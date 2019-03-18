@@ -781,9 +781,9 @@ static void fuse_notify_delete(struct fuse* fuse, const __u64 parent,
 
     res = writev(fuse->fd, vec, 3);
     /* Ignore ENOENT, since other views may not have seen the entry */
-    if (res < 0 && errno != ENOENT) {
-        ERROR("*** NOTIFY FAILED *** %d\n", errno);
-    }
+    //if (res < 0 && errno != ENOENT) {
+    //    ERROR("*** NOTIFY FAILED *** %d\n", errno);
+    //}
 }
 
 static int handle_lookup(struct fuse* fuse, struct fuse_handler* handler,
