@@ -51,8 +51,8 @@ static int ion_ioctl(int fd, int req, void *arg)
 {
     int ret = ioctl(fd, req, arg);
     if (ret < 0) {
-        ALOGE("ioctl %x failed with code %d: %s\n", req,
-              ret, strerror(errno));
+        //ALOGE("ioctl %x failed with code %d: %s\n", req,
+        //      ret, strerror(errno));
         return -errno;
     }
     return ret;
@@ -105,12 +105,12 @@ int ion_map(int fd, ion_user_handle_t handle, size_t length, int prot,
     if (ret < 0)
         return ret;
     if (data.fd < 0) {
-        ALOGE("map ioctl returned negative fd\n");
+        //ALOGE("map ioctl returned negative fd\n");
         return -EINVAL;
     }
     tmp_ptr = mmap(NULL, length, prot, flags, data.fd, offset);
     if (tmp_ptr == MAP_FAILED) {
-        ALOGE("mmap failed: %s\n", strerror(errno));
+        //ALOGE("mmap failed: %s\n", strerror(errno));
         return -errno;
     }
     *map_fd = data.fd;
@@ -132,7 +132,7 @@ int ion_share(int fd, ion_user_handle_t handle, int *share_fd)
     if (ret < 0)
         return ret;
     if (data.fd < 0) {
-        ALOGE("share ioctl returned negative fd\n");
+        //ALOGE("share ioctl returned negative fd\n");
         return -EINVAL;
     }
     *share_fd = data.fd;
