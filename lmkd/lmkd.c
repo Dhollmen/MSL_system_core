@@ -235,7 +235,7 @@ static void writefilestring(char *path, char *s) {
     int ret;
 
     if (fd < 0) {
-        ALOGE("Error opening %s; errno=%d", path, errno);
+        //ALOGE("Error opening %s; errno=%d", path, errno);
         return;
     }
 
@@ -333,7 +333,7 @@ static void cmd_target(int ntargets, int *params) {
 }
 
 static void ctrl_data_close(void) {
-    ALOGI("Closing Activity Manager data connection");
+    //ALOGI("Closing Activity Manager data connection");
     close(ctrl_dfd);
     ctrl_dfd = -1;
     maxevents--;
@@ -401,7 +401,7 @@ wronglen:
 
 static void ctrl_data_handler(uint32_t events) {
     if (events & EPOLLHUP) {
-        ALOGI("ActivityManager disconnected");
+        //ALOGI("ActivityManager disconnected");
         if (!ctrl_dfd_reopened)
             ctrl_data_close();
     } else if (events & EPOLLIN) {
@@ -427,7 +427,7 @@ static void ctrl_connect_handler(uint32_t events __unused) {
         return;
     }
 
-    ALOGI("ActivityManager connected");
+    //ALOGI("ActivityManager connected");
     maxevents++;
     epev.events = EPOLLIN;
     epev.data.ptr = (void *)ctrl_data_handler;
@@ -582,12 +582,12 @@ static int kill_one_process(struct proc *procp, int other_free, int other_file,
         return -1;
     }
 
-    ALOGI("Killing '%s' (%d), uid %d, adj %d\n"
-          "   to free %ldkB because cache %s%ldkB is below limit %ldkB for oom_adj %d\n"
-          "   Free memory is %s%ldkB %s reserved",
-          taskname, pid, uid, procp->oomadj, tasksize * page_k,
-          first ? "" : "~", other_file * page_k, minfree * page_k, min_score_adj,
-          first ? "" : "~", other_free * page_k, other_free >= 0 ? "above" : "below");
+//     ALOGI("Killing '%s' (%d), uid %d, adj %d\n"
+//           "   to free %ldkB because cache %s%ldkB is below limit %ldkB for oom_adj %d\n"
+//           "   Free memory is %s%ldkB %s reserved",
+//           taskname, pid, uid, procp->oomadj, tasksize * page_k,
+//           first ? "" : "~", other_file * page_k, minfree * page_k, min_score_adj,
+//           first ? "" : "~", other_free * page_k, other_free >= 0 ? "above" : "below");
     r = kill(pid, SIGKILL);
     killProcessGroup(uid, pid, SIGKILL);
     pid_remove(pid);
@@ -687,13 +687,13 @@ static int init_mp(char *levelstr, void *event_handler)
 
     mpfd = open(MEMCG_SYSFS_PATH "memory.pressure_level", O_RDONLY);
     if (mpfd < 0) {
-        ALOGI("No kernel memory.pressure_level support (errno=%d)", errno);
+        //ALOGI("No kernel memory.pressure_level support (errno=%d)", errno);
         goto err_open_mpfd;
     }
 
     evctlfd = open(MEMCG_SYSFS_PATH "cgroup.event_control", O_WRONLY);
     if (evctlfd < 0) {
-        ALOGI("No kernel memory cgroup event control (errno=%d)", errno);
+        //ALOGI("No kernel memory cgroup event control (errno=%d)", errno);
         goto err_open_evctlfd;
     }
 
@@ -776,11 +776,11 @@ static int init(void) {
     use_inkernel_interface = !access(INKERNEL_MINFREE_PATH, W_OK);
 
     if (use_inkernel_interface) {
-        ALOGI("Using in-kernel low memory killer interface");
+        //ALOGI("Using in-kernel low memory killer interface");
     } else {
         ret = init_mp(MEMPRESSURE_WATCH_LEVEL, (void *)&mp_event);
-        if (ret)
-            ALOGE("Kernel does not support memory pressure events or in-kernel low memory killer");
+        //if (ret)
+        //    ALOGE("Kernel does not support memory pressure events or in-kernel low memory killer");
     }
 
     for (i = 0; i <= ADJTOSLOT(OOM_ADJUST_MAX); i++) {
