@@ -452,7 +452,7 @@ int init_parse_config_file(const char* path) {
     parse_config(path, data);
     dump_parser_state();
 
-    NOTICE("(Parsing %s took %.2fs.)\n", path, t.duration());
+    //NOTICE("(Parsing %s took %.2fs.)\n", path, t.duration());
     return 0;
 }
 

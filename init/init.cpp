@@ -323,10 +323,10 @@ void service_start(struct service *svc, const char *dynamic_args)
 
         if (false) {
             for (size_t n = 0; svc->args[n]; n++) {
-                INFO("args[%zu] = '%s'\n", n, svc->args[n]);
+                //INFO("args[%zu] = '%s'\n", n, svc->args[n]);
             }
             for (size_t n = 0; ENV[n]; n++) {
-                INFO("env[%zu] = '%s'\n", n, ENV[n]);
+                //INFO("env[%zu] = '%s'\n", n, ENV[n]);
             }
         }
 
@@ -396,9 +396,9 @@ void service_start(struct service *svc, const char *dynamic_args)
     svc->flags |= SVC_RUNNING;
 
     if ((svc->flags & SVC_EXEC) != 0) {
-        INFO("SVC_EXEC pid %d (uid %d gid %d+%zu context %s) started; waiting...\n",
-             svc->pid, svc->uid, svc->gid, svc->nr_supp_gids,
-             svc->seclabel ? : "default");
+        //INFO("SVC_EXEC pid %d (uid %d gid %d+%zu context %s) started; waiting...\n",
+        //     svc->pid, svc->uid, svc->gid, svc->nr_supp_gids,
+        //     svc->seclabel ? : "default");
         waiting_for_exec = true;
     }
 
@@ -678,11 +678,11 @@ static int mix_hwrng_into_linux_rng_action(int nargs, char **args)
             open("/dev/hw_random", O_RDONLY | O_NOFOLLOW | O_CLOEXEC));
     if (hwrandom_fd == -1) {
         if (errno == ENOENT) {
-          ERROR("/dev/hw_random not found\n");
+          //ERROR("/dev/hw_random not found\n");
           /* It's not an error to not have a Hardware RNG. */
           result = 0;
-        } else {
-          ERROR("Failed to open /dev/hw_random: %s\n", strerror(errno));
+        //} else {
+        //  ERROR("Failed to open /dev/hw_random: %s\n", strerror(errno));
         }
         goto ret;
     }
@@ -698,16 +698,16 @@ static int mix_hwrng_into_linux_rng_action(int nargs, char **args)
         chunk_size = TEMP_FAILURE_RETRY(
                 read(hwrandom_fd, buf, sizeof(buf) - total_bytes_written));
         if (chunk_size == -1) {
-            ERROR("Failed to read from /dev/hw_random: %s\n", strerror(errno));
+            //ERROR("Failed to read from /dev/hw_random: %s\n", strerror(errno));
             goto ret;
         } else if (chunk_size == 0) {
-            ERROR("Failed to read from /dev/hw_random: EOF\n");
+            //ERROR("Failed to read from /dev/hw_random: EOF\n");
             goto ret;
         }
 
         chunk_size = TEMP_FAILURE_RETRY(write(urandom_fd, buf, chunk_size));
         if (chunk_size == -1) {
-            ERROR("Failed to write to /dev/urandom: %s\n", strerror(errno));
+            //ERROR("Failed to write to /dev/urandom: %s\n", strerror(errno));
             goto ret;
         }
         total_bytes_written += chunk_size;
@@ -995,8 +995,8 @@ static void selinux_initialize(bool in_kernel_domain) {
             security_failure();
         }
 
-        NOTICE("(Initializing SELinux %s took %.2fs.)\n",
-               is_enforcing ? "enforcing" : "non-enforcing", t.duration());
+        //NOTICE("(Initializing SELinux %s took %.2fs.)\n",
+        //       is_enforcing ? "enforcing" : "non-enforcing", t.duration());
     } else {
         selinux_init_all_handles();
     }
